@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { BiChevronDown, BiChevronUp,BiPlus,BiX } from "react-icons/bi";
 import axios from "axios";
 import SectionCards from "./SectionCards";
 
+
 const YearBar = () => {
+
   const [availableYears, setAvailableYears]= useState([]);
   const [selected, setSelected] = useState("");
   const [open, setOpen] = useState(false);
@@ -11,7 +14,13 @@ const YearBar = () => {
   const [showModal,setShowModal]= useState(false);
   const [year, setYear]= useState("");
   const [sections, setSections] = useState();
-  
+  const navigate = useNavigate();
+
+  const handleCardClick = (sectionKey) => {
+    // Navigate to the StudentDetails page with the selected section
+    navigate(`/student-details/${year}/${sectionKey}`);
+  };
+  console.log(selected)
   const fetchSections = (year) => {
     axios
       .get(`http://localhost:8000/getSections/${year}`)
@@ -24,8 +33,17 @@ const YearBar = () => {
         console.error("Error fetching sections:", error);
       });
   };
- 
+
   //fetching Years
+  useEffect(() => {
+    const storedYear = localStorage.getItem('selectedYear');
+    if (storedYear) {
+      setSelected(storedYear);
+      fetchSections(storedYear);
+    }
+    // Fetch available years
+    // ...
+  }, []);
   useEffect(()=>{
     axios
     .get("http://localhost:8000/availableYears")
@@ -81,12 +99,16 @@ const YearBar = () => {
       console.error("Error uploading data:", error);
     });
 };
-
+const handleYearSelection = (year) => {
+  setSelected(year);
+  localStorage.setItem('selectedYear', year);
+  fetchSections(year);
+};
 
 
   return (
     <div className="w-auto">
-    <div className="flex justify-between w-full">
+    <div className="flex flex-col md:flex-row justify-between w-full">
       <div className="flex gap-2">
       <div className="w-68 font-medium h-30 ml-4 ">
         <div
@@ -111,6 +133,7 @@ const YearBar = () => {
                 setSelected(year);
                 setOpen(false);
                 fetchSections(year);
+                handleYearSelection(year)
               }}
             >
               {year}
@@ -196,8 +219,9 @@ const YearBar = () => {
                
                
     </div >
-    <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-16 lg:gap-28  border p-2 border-black rounded m-2 '>
-    <SectionCards sectionData={sections}/></div>
+    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 border p-2 border-black rounded m-2 '>
+    <SectionCards sectionData={sections} year={selected} onCardClick={handleCardClick} />
+    </div>
     </div>
 
   );

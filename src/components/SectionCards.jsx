@@ -1,10 +1,21 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+const SectionCards = ({ sectionData,onCardClick ,year}) => {
+  const navigate = useNavigate();
 
-const SectionCards = ({ sectionData }) => {
+  const handleCardClick = (sectionKey) => {
+    // Navigate to the StudentDetails page with the selected section
+    navigate(`/student-details/${year}/${sectionKey}`);
+  };
   return (
+    
     <>
       {sectionData && Object.entries(sectionData).map(([sectionKey, studentsArray]) => (
-        <div key={sectionKey} className="w-64 p-2 bg-stone-200 border border-gray-200 rounded-lg shadow">
+        <div 
+        key={sectionKey} 
+        onClick={()=>handleCardClick(sectionKey)}
+        
+        className="w-64 p-2 bg-stone-200 border border-gray-200 rounded-lg shadow">
           <div className="flex justify-evenly">
             <div className='flex flex-col '>
               <h5 className="mb-2 text-5xl font-semibold text-gray-900 ">{sectionKey}</h5>
@@ -22,7 +33,7 @@ const SectionCards = ({ sectionData }) => {
           </div>
           <div>
             <h2 className='text-sm font-semibold text-gray-700 '>Student Details</h2>
-            <ul className="max-w-md text-[12px] italic text-gray-500 list-disc list-inside dark:text-gray-400">
+            <ul onClick={()=>onCardClick(sectionKey)} className="max-w-md text-[12px] italic text-gray-500 list-disc list-inside dark:text-gray-400">
               <li>
                 Placed: <span>-</span>
               </li>

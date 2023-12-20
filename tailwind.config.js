@@ -8,7 +8,8 @@ export default {
     extend: {
       colors:{
         "srm-blue":"#0C4DA2",
-        "snow-white":"#F3F6FB"
+        "snow-white":"#F3F6FB",
+        "table-bg":"#EBEFF2"
       },
     },
   },

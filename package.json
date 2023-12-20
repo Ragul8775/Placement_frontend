@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-table": "^8.10.7",
     "axios": "^1.6.0",
     "poper": "^0.1.1",
     "popper": "^1.0.1",
@@ -17,7 +18,9 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.48.2",
     "react-icons": "^4.11.0",
-    "react-router-dom": "^6.18.0"
+    "react-router-dom": "^6.18.0",
+    "react-table": "^7.8.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
