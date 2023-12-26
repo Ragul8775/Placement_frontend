@@ -4,11 +4,14 @@ import Dashboard from './scenes/Dashboard';
 import Category from './scenes/Category';
 import StudentDetails from './scenes/StudentDetails';
 import LoginForm from './scenes/LoginForm';
+import AuthProvider from './context/AuthContext';
 
 
 function App() {
   return (
+   
     <Router>
+      <AuthProvider>
       <Routes>
         <Route path="/" element={<LoginForm />} />
         <Route path="/dashboard" element={<Dashboard />} />
@@ -17,6 +20,7 @@ function App() {
        
         
       </Routes>
+      </AuthProvider>
     </Router>
   );
 }
