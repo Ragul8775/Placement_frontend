@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Dashboard from './scenes/Dashboard';
 import Category from './scenes/Category';
 import StudentDetails from './scenes/StudentDetails';
@@ -13,6 +13,7 @@ function App() {
     <Router>
       <AuthProvider>
       <Routes>
+      
         <Route path="/" element={<LoginForm />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/category" element={<Category/>} />

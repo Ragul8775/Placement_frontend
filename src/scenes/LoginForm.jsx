@@ -5,6 +5,7 @@ import Logo from '../assets/logo.png'
 import { createUserWithEmailAndPassword } from 'firebase/auth'; */
 import { useAuth } from '../context/AuthContext';
 import LoadingScreen from '../components/LoadingScreen';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const[loginEmail, setLoginInEmail] = useState('');
@@ -14,27 +15,38 @@ const LoginForm = () => {
   const [name, setName] =useState('')
   const [loading,setLoading] = useState(false)
   const[signUp, setSignUp] = useState(false)
-  const {signup} =useAuth()
-
+  const {signup, login} =useAuth()
+  const [error,setError] = useState('')
+  const navigate = useNavigate()
   //Login authentication
-  const handleLoginSubmit = (event) => {
+  async function handleLoginSubmit (event)  {
     event.preventDefault();
-    signInWithEmailAndPassword(auth,loginEmail,loginPassword)
-    .then((userCredential)=>{
-      console.log(userCredential)
-    }).catch((error)=>console.error(error))
+    try{
+      setError('')
+      setLoading(true)
+      await login(loginEmail,loginPassword)
+      navigate('/dashboard')
+    }
+    catch{
+      setError("Failed to sign In")
+    }
+    setLoading(false)
+    
+      
+  };
   
-};
 //sigup registration
 async function handleSignupSubmit (event)  {
   event.preventDefault();
   try{
     setError('')
     setLoading(true)
-    await signup(signupEmail,signupPassword)}
-  catch{
-    setUserProperties("Failed to create an Account")
-  }
+    await signup(signupEmail,signupPassword)
+    setSignUp(false)}
+    catch (error) {
+      console.error(error); // Log the error
+      setError("Failed to create an Account");
+    }
   setLoading(false)
     
 };
@@ -59,6 +71,7 @@ async function handleSignupSubmit (event)  {
      <p className=' font-medium text-lg text-gray-500 mt-4'> Welcome back! Please enter your details.</p>
      <div className='mt-8'>
      <form  onSubmit={handleLoginSubmit}>
+     {error && <div className='p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 '>{error}</div>}
          <div>
            
              <label className='text-lg font-medium'>Email</label>
@@ -101,6 +114,7 @@ async function handleSignupSubmit (event)  {
      
      <div className='mt-2'>
        <form  onSubmit={handleSignupSubmit}>
+        {error && <div className='p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 '>{error}</div>}
          <div>
              <label  className='text-lg font-medium'>Name</label>
              <input
